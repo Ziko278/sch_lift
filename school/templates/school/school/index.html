@@ -1,0 +1,131 @@
+{% extends 'admin_dashboard/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block 'main' %}
+<div class="col-12">
+    <div class="card recent-sales overflow-auto">
+        <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                    <h6>Action</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" style="width:100%" data-bs-target="#verticalycentered">Add School</button>
+                </a></li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <h5 class="card-title">List of Registered Schools</h5>
+            {% if form.errors %}
+                <h5 class="text-danger">{{form.errors}}</h5>
+            {% endif %}
+            <table class="table table-borderless datatable">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">School Name</th>
+                    <th scope="col">Current Plan</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="text-center">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if school_list %}
+                {% for school in school_list %}
+                <tr>
+                    <th scope="row"><a href="#">{{ forloop.counter }}</a></th>
+                    <td>{{ school.name|title }}</td>
+                    <td>{{ school.school_profile.current_plan }}</td>
+                    <td><b class="{% if school.status == 'active' %} text-success {% else %} text-danger {% endif %}">{{ school.status|upper }}</b></td>
+                    <td class="text-center">
+                        <a href="{% url 'school_detail' school.id %}" title="View Detail" class="btn btn-primary"><i class="bi bi-eye"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+
+                </tbody>
+            </table>
+            {% if not school_list %}
+                <h3 class="text-center">No School Registered Yet</h3>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<form method="POST" action="{% url 'school_create' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal fade" id="verticalycentered" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Enter School Details to Register</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="hidden" name="type" value="{{ user.profile.type }}" />
+                            <input type="hidden" name="user" value="{{ user.id }}" />
+                            {{ form.name }}
+                            <label for="floatingName">School Name </label>
+                        </div><br />
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-floating">
+                            {{ form.short_name }}
+                            <label for="floatingName">Short Name </label>
+                        </div><br />
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-floating">
+                            {{ form.logo }}
+                            <label for="floatingName">Logo </label>
+                        </div><br />
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-floating">
+                            {{ form.mobile_1 }}
+                            <label for="floatingName">Mobile 1 </label>
+                        </div><br />
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-floating">
+                            {{ form.mobile_2 }}
+                            <label for="floatingName">Mobile 2 </label>
+                        </div><br />
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-floating">
+                            {{ form.email }}
+                            <label for="floatingName">Email </label>
+                        </div><br />
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating">
+                            {{ form.address }}
+                            <label for="floatingName">Address </label>
+                        </div><br />
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

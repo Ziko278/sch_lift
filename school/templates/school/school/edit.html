@@ -1,0 +1,86 @@
+{% extends 'admin_dashboard/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block 'main' %}
+<div class="col-12">
+    <div class="card recent-sales overflow-auto">
+
+        <div class="card-body">
+            <h5 class="card-title">Update School Detail</h5>
+            {% if form.errors %}
+                <h5 class="text-danger">{{form.errors}}</h5>
+            {% endif %}
+            <form method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="moda" id="verticalycentered" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ school }}</h5>
+                            </div>
+                            <div class="modal-body row">
+                                <div class="col-6">
+                                    <div class="form-floating">
+                                        <input type="hidden" name="type" value="{{ user.profile.type }}" />
+                                        <input type="hidden" name="user" value="{{ user.id }}" />
+                                        {{ form.name }}
+                                        <label for="floatingName">School Name </label>
+                                    </div><br />
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-floating">
+                                        {{ form.short_name }}
+                                        <label for="floatingName">Short Name </label>
+                                    </div><br />
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-floating">
+                                        {{ form.logo }}
+                                        <label for="floatingName">Logo </label>
+                                    </div><br />
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-floating">
+                                        {{ form.mobile_1 }}
+                                        <label for="floatingName">Mobile 1 </label>
+                                    </div><br />
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-floating">
+                                        {{ form.mobile_2 }}
+                                        <label for="floatingName">Mobile 2 </label>
+                                    </div><br />
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-floating">
+                                        {{ form.email }}
+                                        <label for="floatingName">Email </label>
+                                    </div><br />
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        {{ form.address }}
+                                        <label for="floatingName">Address </label>
+                                    </div><br />
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <a onclick="window.history.back()" class="btn btn-danger">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

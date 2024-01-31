@@ -1,0 +1,423 @@
+{% extends 'admin_dashboard/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block 'main' %}
+<div class="card">
+    <div class="card-body ">
+        <h5 class="card-title">Actions</h5>
+        <a title="Edit School Detail" href="{% url 'school_edit' school.id %}" class="btn btn-outline-warning"><i class="bi bi-pencil"></i></a>
+        <button type="button" title="Generate Login Credentials" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#edit{{ forloop.counter }}"><i class="bi bi-person"></i></button>
+        <button type="button" title="Update School Database Info" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editdb"><i class="bx bxs-data"></i></button>
+        <button type="button" title="School Plan" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#editplan"><i class="bi bi-cash"></i></button>
+        <button type="button" title="Take Payment" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#takepay"><i class="bi bi-cash"></i></button>
+        <a title="Delete School" href="{% url 'school_delete' school.id %}" class="btn btn-outline-danger"><i class="bi bi-trash"></i></a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body pt-3">
+                <ul class="nav nav-tabs nav-tabs-bordered">
+                    <li class="nav-item">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Class Detail</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Subscription Payments</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content pt-2">
+                    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                        <h5 class="card-title">School Details</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card info-card sales-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"></h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="ri-contacts-book-2-fill"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>{{ school|upper }}</h6>
+                                                <span class="text-muted small pt-2 ps-1">School Name</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="card info-card sales-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"></h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-people"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>{{ school.number_of_students }}</h6>
+                                                <span class="text-muted small pt-2 ps-1">Number of Students</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card info-card sales-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"></h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-alarm-fill"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>{{ school.school_profile.current_plan }} - N{{ school.school_profile.current_plan.price_per_term|floatformat }}</h6>
+                                                <span class="text-muted small pt-2 ps-1">Current Plan</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card info-card sales-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"></h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-cash"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>N{{ school.current_payment|floatformat|intcomma }}</h6>
+                                                <span class="text-muted small pt-2 ps-1">Current Payment for {{ academic_info.session }} {{ academic_info.term|title }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card info-card sales-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"></h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-cash"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>N{{ school.amount_paid|floatformat|intcomma }}</h6>
+                                                <span class="text-muted small pt-2 ps-1">Amount Paid for {{ academic_info.session }} {{ academic_info.term|title }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card info-card sales-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"></h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-cash"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>N{{ school.current_balance|floatformat|intcomma }}</h6>
+                                                <span class="text-muted small pt-2 ps-1">Balance for {{ academic_info.session }} {{ academic_info.term|title }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                        <div class="row">
+                            <div class="card-body">
+                                <h5 class="card-title">Subscription Payments fo {{ school }}</h5>
+                                <table class="table table-borderless datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Session</th>
+                                            <th scope="col">Term</th>
+                                            <th scope="col">Method</th>
+                                            <th scope="col">Date</th>
+                                            <th class="text-center" scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if school.payment_list %}
+                                        {% for payment in school.payment_list %}
+                                            <tr>
+                                                <th scope="row">{{ forloop.counter }}</th>
+                                                <td>{{ payment.amount|floatformat|intcomma }}</td>
+                                                <td>{{ payment.session }}</td>
+                                                <td>{{ payment.term|title }}</td>
+                                                <td>{{ payment.payment_method|title }}</td>
+                                                <td>{{ payment.date|date }}</td>
+                                                <td class="text-center"><a class="btn btn-primary" href="{ url 'student_detail' student.id %}"><i class="bi bi-eye"></i></a></td>
+                                            </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                            <tr><td colspan="5"><h3 class="text-center">No Student in this Class </h3></td></tr>
+                                        {% endif %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form method="POST" action="{% url 'school_generate_login' %}">
+    {% csrf_token %}
+    <div class="modal fade" id="edit" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            {% if not school.school_profile %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Generate Logins for {{ school.short_name|upper }} </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="hidden" name="school_id" value="{{ school.id}}">
+                                <input type="text" id="username" class="form-control" autocomplete="off" name="username" placeholder="username" required>
+                                <label for="username">Username</label>
+                            </div><br />
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+
+                                <input type="email" id="email" class="form-control" autocomplete="off" name="email" placeholder="username" required>
+                                <label for="email">Email</label>
+                            </div><br />
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="password" id="password" class="form-control" autocomplete="off" name="password" placeholder="username">
+                                <label for="password">Password</label>
+                            </div><br />
+                        </div>
+                    </div>
+                    <p class="text-center text-danger"><b>LEAVE PASSWORD FIELD BLANK TO AUTO GENERATE THE PASSWORD</b></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Generate</button>
+                </div>
+            </div>
+            {% else %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Generate Logins for {{ school.short_name|upper }} </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+
+                    </div>
+                    <p class="text-center text-danger"><b>LOGIN ALREADY GENERATED FOR SCHOOL</b></p>
+                    <p class="text-center"><b>USERNAME: {{ school.school_profile.user }}</b></p>
+                    <p class="text-center"><b>PASSWORD: ********</b></p>
+                </div>
+
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</form>
+
+
+<form method="POST" {% if not school_db %} action="{% url 'school_db_create' %}" {% else %} action="{% url 'school_db_edit' school_db.id %}" {% endif %}>
+    {% csrf_token %}
+    <div class="modal fade" id="editdb" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Database setting for {{ school.short_name|upper }} </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="hidden" name="school" value="{{ school.id}}">
+                                {{ school_form.host }}
+                                <label for="username">Host Name <b style="color:red">*</b></label>
+                            </div><br />
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                {{ school_form.database }}
+                                <label for="username">Database <b style="color:red">*</b></label>
+                            </div><br />
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                {{ school_form.username }}
+                                <label for="username">Username <b style="color:red">*</b></label>
+                            </div><br />
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                {{ school_form.password }}
+                                <label for="username">Password <b style="color:red">*</b></label>
+                            </div><br />
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                {{ school_form.engine }}
+                                <label for="username">Engine <b style="color:red">*</b></label>
+                            </div><br />
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                {{ school_form.port }}
+                                <label for="username">Port <b style="color:red">*</b></label>
+                            </div><br />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+
+
+<form method="POST" action="{% url 'admin_change_plan' %}">
+    {% csrf_token %}
+    <div class="modal fade" id="editplan" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Subscription Plan for {{ school.short_name|upper }} </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="hidden" name="school_id" value="{{ school.id}}">
+                                <select class="form-control" name="plan_id" required>
+                                    <option value="">------------------</option>
+                                    {% for plan in plan_list %}
+                                    <option {% if plan == school.school_profile.current_plan %} selected="selected" {% endif %} value="{{plan.id}}">{{ plan|upper }} - N{{ plan.price_per_term|floatformat }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="username">Select Plan <b style="color:red">*</b></label>
+                            </div><br />
+
+                        </div>
+                    </div>
+                    <h4><b>CURRENT PLAN: {% if school.school_profile.current_plan %} {{ school.school_profile.current_plan }} - N{{ school.school_profile.current_plan.price_per_term|floatformat }} {% else %} ------------- {% endif %}</b></h4>
+
+
+                    {% if school.has_made_payment %}
+                        <h4 style="color:red"><b>SCHOOL HAS ALREADY MADE PAYMENT UNDER A PLAN, CHANGE ANYWAYS??</b></h4>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</form>
+
+
+
+<form method="POST" action="{% url 'admin_subscription_payment' %}">
+    {% csrf_token %}
+    <div class="modal fade" id="takepay" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Record Payment for {{ school.short_name|upper }} </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="hidden" name="school" value="{{ school.id}}">
+                                <input type="hidden" name="session" value="{{ academic_info.session.id}}">
+                                <input type="hidden" name="term" value="{{ academic_info.term}}">
+                                <input type="number" name="amount" min="{{ school.school_profile.current_plan.price_per_term|floatformat }}" max="{{ school.current_balance|floatformat }}" class="form-control" required />
+                                <label for="username">Amount <b style="color:red">*</b></label>
+                            </div><br />
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select name="payment_method" required class="form-control">
+                                    <option value="">-----------</option>
+                                    <option value="bank">Bank</option>
+                                    <option value="transfer">Transfer</option>
+                                    <option value="cash">Cash</option>
+                                </select>
+                                <label for="username">Payment Method <b style="color:red">*</b></label>
+                            </div><br />
+
+                        </div>
+                    </div>
+                    <h6><b>CURRENT PLAN: {% if school.school_profile.current_plan %} {{ school.school_profile.current_plan }} - N{{ school.school_profile.current_plan.price_per_term|floatformat }} {% else %} ------------- {% endif %}</b></h6>
+                    <h6><b>No of Students: {{ school.number_of_students }} </b></h6>
+                    <h6><b>Total Amount: N{{ school.current_payment|floatformat|intcomma }} </b></h6>
+                    <h6><b>Amount Paid: N{{ school.amount_paid|floatformat|intcomma }} </b></h6>
+                    <h6><b>Current Balance: N{{ school.current_balance|floatformat|intcomma }} </b></h6>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</form>
+{% endblock %}
